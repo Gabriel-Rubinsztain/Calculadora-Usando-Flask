@@ -1,7 +1,9 @@
+from ast import operator
+from crypt import methods
 import os
-from flask import Flask, abort, jsonify, render_template, request
+from flask import Flask, jsonify, request, render_template, abort
 from math import sqrt
-import Calculadora_fun as Calculadora
+import Calculadora_fun as calcular
 
 app = Flask(__name__)
 
@@ -13,38 +15,35 @@ def main():
 
 @app.route('/calculadora', methods=['POST', 'GET'])
 def calculadora():
-    valor1 = int(request.form['valor1'])
-    valor2 = int(request.form['valor2'])
+
+    v1 = request.form['valor1']
+    v2 = request.form['valor2']
     operacao = request.form['operacao']
-    print(type(valor1))
-    print(type(valor2))
-    print(operacao)
 
     try:
-        valor1 = int(valor1)
+        v1 = int(v1)
     except ValueError:
         abort(404)
 
     try:
-        valor2 = int(valor2)
+        v2 = int(v2)
     except ValueError:
         abort(404)
 
     if(operacao == 'somar'):
-        resultado = Calculadora.somar(valor1, valor2)
+        resultado = calcular.somar(v1, v2)
     elif(operacao == 'subtrair'):
-        resultado = Calculadora.subtrair(valor1, valor2)
+        resultado = calcular.subtrair(v1, v2)
+    elif(operacao == 'multiplicar'):
+        resultado = calcular.multiplicar(v1, v2)
     elif(operacao == 'dividir'):
-        if(valor2 == 0):
+        if(v2 == 0):
             abort(422)
         else:
-            resultado = Calculadora.dividir(valor1, valor2)
-    elif(operacao == 'multiplicar'):
-        resultado = Calculadora.multiplicar(valor1, valor2)
+            resultado = calcular.dividir(v1, v2)
     else:
         abort(404)
 
-    print(resultado)
     return str(resultado)
 
 
