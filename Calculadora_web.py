@@ -1,5 +1,4 @@
 from ast import operator
-from crypt import methods
 import os
 from flask import Flask, jsonify, request, render_template, abort
 from math import sqrt
